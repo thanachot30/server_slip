@@ -8,10 +8,17 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { studentData } from './dto';
 
+interface User {
+  studentId: string;
+  firstName: string;
+  lastName: string;
+  email?: string | null;
+}
+
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
-
+  
   @Get()
   getHello(): string {
     return this.appService.getHello();
@@ -28,9 +35,24 @@ export class AppController {
     }
   }
   @Get('/student/:id')
-  async findUser(@Param('id') id:string):Promise<studentData | null>{
+  async findUser(@Param('id') id:string){
     try {
-      const user = await this.appService.find_user_by_id(id)
+      // const user = await this.appService.find_user_by_id(id)
+      const mock_data:User[] = [
+        { studentId: '112233', firstName: 'Thanachot', lastName: 'Supawasut', email: 'thanachot@gmail.com' },
+      { studentId: '112244', firstName: 'Zen', lastName: 'Supawasut', email: 'zen@mail.com' },
+      { studentId: '112255', firstName: 'John', lastName: 'Doe', email: 'john.doe@mail.com' },
+      { studentId: '112266', firstName: 'Jane', lastName: 'Doe', email: 'jane.doe@mail.com' },
+      { studentId: '112277', firstName: 'Sam', lastName: 'Smith', email: 'sam.smith@mail.com' },
+      { studentId: '112288', firstName: 'Alice', lastName: 'Brown', email: 'alice.brown@mail.com' },
+      { studentId: '112299', firstName: 'Bob', lastName: 'Davis', email: 'bob.davis@mail.com' },
+      { studentId: '112300', firstName: 'Charlie', lastName: 'Wilson', email: 'charlie.wilson@mail.com' },
+      { studentId: '112311', firstName: 'Daisy', lastName: 'Clark', email: 'daisy.clark@mail.com' },
+      { studentId: '112322', firstName: 'Eve', lastName: 'Johnson', email: 'eve.johnson@mail.com' },
+      ]
+
+      const user = mock_data.find((user) => user.studentId === id);
+
       return user
     } catch (error) {
       throw Error(error)
@@ -63,8 +85,7 @@ export class AppController {
       
       const Readfile = fs.readFileSync(filePath);
 
-      
-      const res = await axios.post("https://api.slipok.com/api/line/apikey/32234",{
+      const res = await axios.post(process.env.API_SLIP,{
         "files":Readfile,
         // "log":true,
         // "amount":500
