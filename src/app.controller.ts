@@ -87,7 +87,7 @@ export class AppController {
 
       const res = await axios.post(process.env.API_SLIP,{
         "files":Readfile,
-        "log":true,
+        // "log":true,
         // "amount":500
         
       },{
